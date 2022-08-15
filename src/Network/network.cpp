@@ -1,8 +1,11 @@
 #include "network.h"
 #include <Eigen/Dense>
+#include <vector>
+#include <iostream>
 
 using Eigen::MatrixXd;
 using Eigen::Vector3d;
+using std::vector;
 
 Network::Network(vector<int> sizes) {
 
@@ -36,4 +39,22 @@ MatrixXd Network::forward(MatrixXd input) {
 
     return output;
 
+};
+
+vector<MatrixXd> Network::getLayers() {
+
+    return m_weights;
+
+};
+
+std::ostream& operator<<(std::ostream& out, Network& network){
+    vector<MatrixXd> layers = network.getLayers();
+
+    for (int idx = 0; idx <= layers.size() - 1; ++idx)
+    {   
+        out << "Layer: " << idx << std::endl;
+        out << layers[idx].rows() << "x" << layers[idx].cols() << std::endl;
+    }
+
+    return out;
 };
