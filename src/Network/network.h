@@ -6,6 +6,7 @@
 #include <iostream>
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 using std::vector;
 
 class Network {
@@ -17,6 +18,7 @@ class Network {
         vector<MatrixXd> m_biases;
 
         void initializeWeightsAndBiases();
+        VectorXd flatten(MatrixXd original);
 
     public:
         Network(vector<int>);
@@ -29,6 +31,6 @@ class Network {
 
 };
 
-std::ostream& operator<<(std::ostream& os, Network& dt);
+std::ostream& operator<<(std::ostream& os, Network& network);
 
 #endif // NETWORK_H
