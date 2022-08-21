@@ -1,4 +1,5 @@
 #include "network.h"
+#include "activations.h"
 #include <Eigen/Dense>
 #include <vector>
 #include <iostream>
@@ -34,9 +35,11 @@ MatrixXd Network::forward(MatrixXd input) {
     VectorXd flattened = Network::flatten(input);
 
     VectorXd output = m_weights[0] * flattened + m_biases[0];
+    output = output.unaryExpr(std::ref(sigmoid));
 
     for (int idx = 1; idx < m_weights.size(); idx++) {
         output = m_weights[idx] * output + m_biases[idx];
+        output = output.unaryExpr(std::ref(sigmoid));
     }
 
     return output;
