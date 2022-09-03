@@ -5,8 +5,8 @@
 #include <vector>
 #include <iostream>
 
-using Eigen::MatrixXd;
-using Eigen::VectorXd;
+using Eigen::MatrixXf;
+using Eigen::VectorXf;
 using std::vector;
 
 class Network {
@@ -14,18 +14,17 @@ class Network {
     private:
         int m_numLayers;
         vector<int> m_sizes;
-        vector<MatrixXd> m_weights;
-        vector<MatrixXd> m_biases;
+        vector<MatrixXf> m_weights;
+        vector<VectorXf> m_biases;
 
         void initializeWeightsAndBiases();
-        VectorXd flatten(MatrixXd original);
 
     public:
         Network(vector<int>);
 
-        MatrixXd forward(MatrixXd input);
+        MatrixXf forward(MatrixXf input);
 
-        vector<MatrixXd> getLayers();
+        vector<MatrixXf> getLayers();
 
         void backward(float loss);
 

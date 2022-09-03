@@ -4,8 +4,8 @@
 #include <vector>
 #include <iostream>
 
-using Eigen::MatrixXd;
-using Eigen::VectorXd;
+using Eigen::MatrixXf;
+using Eigen::VectorXf;
 using std::vector;
 
 Network::Network(vector<int> sizes) {
@@ -22,23 +22,24 @@ void Network::initializeWeightsAndBiases() {
 
     for (int idx = 1; idx < m_sizes.size(); idx++) {
         m_weights.push_back(
-            MatrixXd::Random(m_sizes[idx], m_sizes[idx - 1])
+            MatrixXf::Random(m_sizes[idx], m_sizes[idx - 1])
         );
         m_biases.push_back(
-            MatrixXd::Random(m_sizes[idx], 1)
+            VectorXf::Random(m_sizes[idx])
         );
     }
 };
 
-MatrixXd Network::forward(MatrixXd input) {
+MatrixXf Network::forward(MatrixXf input) {
 
-    VectorXd flattened = Network::flatten(input);
+    MatrixXf output = m_weights[0] * input.transpose();
+    output.colwise() += m_biases[0];
 
-    VectorXd output = m_weights[0] * flattened + m_biases[0];
     output = output.unaryExpr(std::ref(sigmoid));
 
     for (int idx = 1; idx < m_weights.size(); idx++) {
-        output = m_weights[idx] * output + m_biases[idx];
+        output = m_weights[idx] * output;
+        output.colwise() += m_biases[idx];
         output = output.unaryExpr(std::ref(sigmoid));
     }
 
@@ -46,22 +47,14 @@ MatrixXd Network::forward(MatrixXd input) {
 
 };
 
-vector<MatrixXd> Network::getLayers() {
+vector<MatrixXf> Network::getLayers() {
 
     return m_weights;
 
 };
 
-VectorXd Network::flatten(MatrixXd original) {
-
-    Eigen::Map<VectorXd> flattened(original.data(), original.size());
-
-    return flattened;
-
-}
-
 std::ostream& operator<<(std::ostream& out, Network& network){
-    vector<MatrixXd> layers = network.getLayers();
+    vector<MatrixXf> layers = network.getLayers();
 
     for (int idx = 0; idx <= layers.size() - 1; ++idx)
     {   
