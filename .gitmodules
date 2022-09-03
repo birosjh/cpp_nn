@@ -1,3 +1,6 @@
 [submodule "external/eigen3"]
 	path = external/eigen3
 	url = https://gitlab.com/libeigen/eigen.git
+[submodule "external/fashion_mnist"]
+	path = external/fashion_mnist
+	url = git@github.com:ArthurSonzogni/mnist-fashion.git
