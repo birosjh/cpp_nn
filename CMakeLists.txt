@@ -8,15 +8,21 @@ set(CMAKE_CXX_STANDARD 17)
 # add the executable
 add_executable(cpp_nn src/main.cpp)
 
-add_subdirectory(src)
-add_subdirectory(external/eigen3)
-
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
+add_subdirectory(external/eigen3)
+include_directories(PRIVATE external/eigen3)
+
+add_subdirectory(src)
+
 target_include_directories(${PROJECT_NAME}
-                            PRIVATE external/eigen3
-                            PUBLIC network)
+                            PUBLIC network
+                            PUBLIC dataloaders)
 
-target_link_directories(${PROJECT_NAME} PRIVATE network)
+target_link_directories(${PROJECT_NAME} 
+                        PRIVATE network
+                        PRIVATE dataloaders)
 
-target_link_libraries(${PROJECT_NAME} network)
+target_link_libraries(${PROJECT_NAME} 
+                        network 
+                        dataloaders)

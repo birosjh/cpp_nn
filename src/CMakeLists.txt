@@ -1,12 +1,14 @@
 set(NETWORK network)
 add_library(${NETWORK} Network/network.cpp)
 add_library(activations Activations/activations.cpp)
+add_library(dataloaders DataLoaders/fashion_mnist_loader.cpp DataLoaders/base_data_loader.h)
 
-target_include_directories(activations
-                            PUBLIC ${PROJECT_SOURCE_DIR}/external/eigen3)
+target_include_directories(dataloaders
+                            PUBLIC ${PROJECT_SOURCE_DIR}/external/fashion_mnist/include)
+
+target_link_directories(dataloaders PRIVATE ${PROJECT_SOURCE_DIR}/external/fashion_mnist/include)
 
 target_include_directories(network
-                            PUBLIC ${PROJECT_SOURCE_DIR}/external/eigen3
                             PUBLIC activations)
 
 target_link_directories(${NETWORK} PRIVATE activations)
