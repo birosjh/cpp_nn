@@ -3,6 +3,8 @@
 #ifndef ACTIVATIONS_H
 #define ACTIVATIONS_H
 
-float sigmoid(const float& input);
+MatrixXf sigmoid(MatrixXf input);
+
+MatrixXf softmax(MatrixXf input);
 
 #endif // ACTIVATIONS_H
