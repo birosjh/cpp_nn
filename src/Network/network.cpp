@@ -32,12 +32,9 @@ void Network::initializeWeightsAndBiases() {
 
 MatrixXf Network::forward(MatrixXf input) {
 
-    MatrixXf output = m_weights[0] * input.transpose();
-    output.colwise() += m_biases[0];
+    MatrixXf output = input.transpose();
 
-    output = sigmoid(output);
-
-    for (int idx = 1; idx < m_weights.size(); idx++) {
+    for (int idx = 0; idx < m_weights.size(); idx++) {
         output = m_weights[idx] * output;
         output.colwise() += m_biases[idx];
         output = sigmoid(output);
