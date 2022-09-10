@@ -17,12 +17,15 @@ add_subdirectory(src)
 
 target_include_directories(${PROJECT_NAME}
                             PUBLIC network
-                            PUBLIC dataloaders)
+                            PUBLIC dataloaders
+                            PUBLIC utils)
 
 target_link_directories(${PROJECT_NAME} 
                         PRIVATE network
-                        PRIVATE dataloaders)
+                        PRIVATE dataloaders
+                        PRIVATE utils)
 
 target_link_libraries(${PROJECT_NAME} 
                         network 
-                        dataloaders)
+                        dataloaders
+                        utils)
