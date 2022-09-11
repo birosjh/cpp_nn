@@ -19,16 +19,19 @@ target_include_directories(${PROJECT_NAME}
                             PUBLIC network
                             PUBLIC dataloaders
                             PUBLIC utils
-                            PUBLIC loss)
+                            PUBLIC loss
+                            PUBLIC accuracy)
 
 target_link_directories(${PROJECT_NAME} 
                         PRIVATE network
                         PRIVATE dataloaders
                         PRIVATE utils
-                        PRIVATE loss)
+                        PRIVATE loss
+                        PRIVATE accuracy)
 
 target_link_libraries(${PROJECT_NAME} 
                         network 
                         dataloaders
                         utils
-                        loss)
+                        loss
+                        accuracy)
