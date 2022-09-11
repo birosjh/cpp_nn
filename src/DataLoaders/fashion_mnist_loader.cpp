@@ -33,26 +33,32 @@ FashionMNISTLoader::FashionMNISTLoader(int batch_size, bool shuffle_train) {
     }
 }
 
-MatrixXf FashionMNISTLoader::nextBatch() {
+Batch FashionMNISTLoader::nextBatch() {
 
     MatrixXf matrix_batch(m_batch_size, 784);
     VectorXf row;
     std::vector<float> image;
+    std::vector<int> labels;
+    Batch next_batch;
     
     int idx = 0;
 
     while (idx < m_batch_size && training_indices.size() > m_batch_size) {
 
         image = m_dataset.training_images[training_indices.back()];
-        
         matrix_batch.row(idx) = Eigen::VectorXf::Map(&image[0], image.size());;
+        
+        labels.push_back(m_dataset.training_labels[training_indices.back()]);
         
         training_indices.pop_back();
 
         idx++;
     }
 
-    return matrix_batch;
+    next_batch.images = matrix_batch;
+    next_batch.labels = labels;
+
+    return next_batch;
 }
 
 int FashionMNISTLoader::num_training_batches() {

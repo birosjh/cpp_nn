@@ -18,7 +18,7 @@ private:
 
 public:
     FashionMNISTLoader(int batch_size, bool shuffle_train = true);
-    MatrixXf nextBatch();
+    Batch nextBatch();
     int num_training_batches();
     int num_test_batches();
 };
