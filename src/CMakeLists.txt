@@ -12,8 +12,11 @@ target_include_directories(dataloaders
 target_link_directories(dataloaders PRIVATE ${PROJECT_SOURCE_DIR}/external/fashion_mnist/include)
 
 target_include_directories(${NETWORK}
-                            PUBLIC activations)
+                            PUBLIC activations
+                            PUBLIC loss)
 
-target_link_directories(${NETWORK} PRIVATE activations)
+target_link_directories(${NETWORK} 
+                          PRIVATE activations
+                          PRIVATE loss)
 
-target_link_libraries(${NETWORK} activations)
+target_link_libraries(${NETWORK} activations loss)
