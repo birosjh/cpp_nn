@@ -7,5 +7,6 @@
 using Eigen::MatrixXf;
 
 std::vector<int> argmax(MatrixXf input);
+std::vector<float> max(MatrixXf input);
 
 #endif // ACTIVATIONS_H

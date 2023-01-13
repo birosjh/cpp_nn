@@ -18,3 +18,16 @@ std::vector<int> argmax(MatrixXf input) {
 
     return max_indices;
 }
+
+std::vector<float> max(MatrixXf input) {
+
+    std::vector<float> max_values;
+
+    for (int idx = 0; idx < input.cols(); ++idx) {
+
+        max_values.push_back(input.col(idx).maxCoeff());
+
+    }
+
+    return max_values;
+}
