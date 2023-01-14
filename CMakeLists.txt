@@ -16,22 +16,16 @@ include_directories(PRIVATE external/eigen3)
 add_subdirectory(src)
 
 target_include_directories(${PROJECT_NAME}
-                            PUBLIC network
+                            PUBLIC trainer
                             PUBLIC dataloaders
-                            PUBLIC utils
-                            PUBLIC loss
-                            PUBLIC accuracy)
+                            PUBLIC network)
 
 target_link_directories(${PROJECT_NAME} 
+                        PRIVATE trainer
                         PRIVATE network
-                        PRIVATE dataloaders
-                        PRIVATE utils
-                        PRIVATE loss
-                        PRIVATE accuracy)
+                        PRIVATE dataloaders)
 
 target_link_libraries(${PROJECT_NAME} 
+                        trainer
                         network 
-                        dataloaders
-                        utils
-                        loss
-                        accuracy)
+                        dataloaders)
