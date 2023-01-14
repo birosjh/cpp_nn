@@ -31,3 +31,15 @@ std::vector<float> max(MatrixXf input) {
 
     return max_values;
 }
+
+MatrixXf hadamard(MatrixXf &matrix_a, MatrixXf &matrix_b) {
+
+    MatrixXf product = matrix_a;
+    product.setZero();
+
+    for(int row_id = 0; row_id < matrix_a.rows(); row_id++) {
+        product.row(row_id) += matrix_a.row(row_id) * matrix_b.row(row_id);
+    }
+
+    return product;
+}
