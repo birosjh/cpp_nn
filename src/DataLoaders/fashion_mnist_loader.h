@@ -1,3 +1,6 @@
+#ifndef LOADER_H
+#define LOADER_H
+
 #include "base_data_loader.h"
 #include <Eigen/Dense>
 #include <vector>
@@ -18,7 +21,10 @@ private:
 
 public:
     FashionMNISTLoader(int batch_size, bool shuffle_train = true);
-    Batch nextBatch();
+    Batch nextTrainingBatch();
+    Batch nextTestBatch();
     int num_training_batches();
     int num_test_batches();
 };
+
+#endif // LOADER_H
