@@ -22,8 +22,8 @@ void Trainer::fit() {
 
         std::cout << "Epoch: " << epoch << std::endl;
 
-        int epoch_loss = 0;
-        int epoch_acc = 0;
+        float epoch_loss = 0;
+        float epoch_acc = 0;
         
         std::cout << "Total batches: " << batch_count << std::endl;
 
@@ -55,30 +55,27 @@ void Trainer::test() {
 
     int batch_count = m_dataloader.num_test_batches();
 
-    // Run a Batch
-    for (int epoch = 0; epoch < m_epochs; epoch++) {
+    std::cout << "Test Run:" << std::endl;
 
-        std::cout << "Epoch: " << epoch << std::endl;
+    float epoch_loss = 0;
+    float epoch_acc = 0;
 
-        int epoch_loss = 0;
-        int epoch_acc = 0;
+    std::vector<Batch> batches = m_dataloader.loadTestBatches();
 
-        std::vector<Batch> batches = m_dataloader.loadTestBatches();
+    for (auto batch : batches) {
 
-        for (auto batch : batches) {
+        MatrixXf probabilities = m_network.forward(batch.images);
 
-            MatrixXf probabilities = m_network.forward(batch.images);
+        std::vector<int> predictions = argmax(probabilities);
+        auto acc = accuracy(predictions, batch.labels);
+        float loss = cross_entropy(probabilities, batch.labels);
 
-            std::vector<int> predictions = argmax(probabilities);
-            auto acc = accuracy(predictions, batch.labels);
-
-            std::cout << "Accuracy: " << acc << std::endl;
-
-        }
-
-        std::cout << "Loss: " << epoch_loss / batch_count << std::endl;
-        std::cout << "Accuracy: " << epoch_acc / batch_count << std::endl;
+        epoch_loss += loss;
+        epoch_acc += acc;
 
     }
+
+    std::cout << "Loss: " << epoch_loss / batch_count << std::endl;
+    std::cout << "Accuracy: " << epoch_acc / batch_count << std::endl;
 
 };
