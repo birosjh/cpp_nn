@@ -34,12 +34,12 @@ MatrixXf softmax(MatrixXf input) {
 
     MatrixXf softmaxed = MatrixXf::Zero(input.rows(), input.cols());
 
-    for(int idx = 0; idx < input.rows(); ++idx) {
-        auto powered = input.row(idx).array().exp();
+    for(int idx = 0; idx < input.cols(); ++idx) {
+        auto powered = input.col(idx).array().exp();
         float powered_sum = powered.sum();
 
-        softmaxed.row(idx) = powered;
-        softmaxed.row(idx) /= powered_sum;
+        softmaxed.col(idx) = powered;
+        softmaxed.col(idx) /= powered_sum;
     }
 
     return softmaxed;
