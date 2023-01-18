@@ -15,9 +15,9 @@ float cross_entropy(MatrixXf predictions, std::vector<int> ground_truth) {
 
     auto element_wise_log = [](float value) { return std::log(value); };
 
-    auto resultant = truth_onehot * (-1 * predictions.unaryExpr(element_wise_log));
+    auto resultant = truth_onehot.transpose().cwiseProduct(predictions.unaryExpr(element_wise_log));
 
-    return resultant.sum();
+    return -1 * resultant.sum();
 };
 
 MatrixXf cross_entropy_prime(MatrixXf probabilities, std::vector<int> ground_truth) {
