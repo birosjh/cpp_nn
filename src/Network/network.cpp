@@ -1,6 +1,7 @@
 #include "network.h"
 #include "activations.h"
 #include "cross_entropy.h"
+#include "utils.h"
 #include <Eigen/Dense>
 #include <vector>
 #include <iostream>
@@ -37,6 +38,8 @@ MatrixXf Network::forward(MatrixXf input) {
 
     MatrixXf output = input.transpose();
 
+    m_layer_activations.push_back(output);
+
     for (int idx = 0; idx < m_weights.size(); idx++) {
         output = m_weights[idx] * output;
         output.colwise() += m_biases[idx];
@@ -68,20 +71,24 @@ void Network::backward(MatrixXf probabilities, std::vector<int> ground_truth) {
     }
 
     // Collect Gradients
-    MatrixXf delta = cross_entropy_prime(probabilities, ground_truth);    
+    MatrixXf cost_differential = cross_entropy_prime(probabilities, ground_truth);
+    MatrixXf activation_differential = sigmoid_prime(m_layer_outputs.back());
 
-    bias_gradients.back() += delta.rowwise().sum();
+    MatrixXf delta = cost_differential.cwiseProduct(activation_differential);
+
+    bias_gradients.back() += delta.rowwise().mean();
     weight_gradients.back() += delta * m_layer_activations.end()[-2].transpose();
 
-    for (int idx = m_weights.size() - 2; idx > 0; idx--) {
+    for (int idx = 2; idx < m_sizes.size(); idx++) {
 
-        auto layer_output = m_layer_outputs[idx];
-        auto diff_weighted_input = sigmoid_prime(layer_output);
+        MatrixXf cost_differential = (m_weights.end()[-idx + 1].transpose() * delta);
+        MatrixXf activation_differential = sigmoid_prime(m_layer_outputs.end()[-idx]);
 
-        VectorXf delta = (m_weights[idx].transpose() * delta) * diff_weighted_input;
+        MatrixXf delta = cost_differential.cwiseProduct(activation_differential);
 
-        bias_gradients.back() = delta;
-        weight_gradients.back() = delta * m_layer_activations[idx - 1].transpose();
+        bias_gradients.end()[-idx] = delta.rowwise().mean();
+        weight_gradients.end()[-idx] = delta * m_layer_activations.end()[-idx - 1].transpose();
+
     }
 
     // Apply Gradient Descent
@@ -91,6 +98,9 @@ void Network::backward(MatrixXf probabilities, std::vector<int> ground_truth) {
         m_biases[idx] = m_biases[idx] - m_learning_rate * bias_gradients[idx];
 
     }
+
+    m_layer_outputs.clear();
+    m_layer_activations.clear();
 
 };
 
