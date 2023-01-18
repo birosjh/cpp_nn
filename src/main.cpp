@@ -8,12 +8,13 @@
 int main()
 {
   int epochs = 5;
+  float learning_rate = 0.01;
 
   FashionMNISTLoader dataloader = FashionMNISTLoader(16);
   
   // Define Network
   std::vector<int> sizes{ 784, 42, 10 };
-  Network nn(sizes, 0.2);
+  Network nn(sizes, learning_rate);
 
   // Print Network Layout
   std::cout << nn << std::endl;
@@ -22,5 +23,5 @@ int main()
 
   trainer.fit();
 
-  // trainer.test();
+  trainer.test();
 }
